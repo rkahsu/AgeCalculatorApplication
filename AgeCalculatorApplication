@@ -1,0 +1,51 @@
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeParseException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class AgeCalculatorApplication {
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Age Calculator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 200);
+        frame.setLayout(new FlowLayout());
+        JPanel panel = new JPanel();
+        JTextField birthDateField = new JTextField(10);
+        JButton calculateButton = new JButton("Calculate Age");
+        JLabel ageLabel = new JLabel("Input a valid date in the format yyyy-mm-dd.");
+
+        int[] age = { 0 };
+
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    LocalDate birthDate = LocalDate.parse(birthDateField.getText());
+                    LocalDate now = LocalDate.now();
+                    Period period = Period.between(birthDate, now);
+                    age[0] = period.getYears(); // Assign the age value
+                    ageLabel.setText("You are " + age[0] + " years old.");
+                } catch (DateTimeParseException ex) {
+                    ageLabel.setText("Input a valid date in the format yyyy-mm-dd.");
+                }
+            }
+        });
+
+        panel.add(ageLabel);
+        panel.add(birthDateField);
+        panel.add(calculateButton);
+        panel.add(ageLabel);
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
